@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search City — Weather</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" id="searchCard">
+    <h1>🌤️ Search City</h1>
+    <input
+      type="text"
+      id="citySearch"
+      placeholder="Type a city and press Enter..."
+      autocomplete="off"
+    />
+    <p id="errorMsg" class="error-text"></p>
+  </div>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  background: linear-gradient(120deg, #6c7587 0%, #25a0a7 100%);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  background: rgba(144, 100, 100, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+h1 {
+  color: #ffffff;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.error-text {
+  color: #ffe5e5;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+input[type="text"]::placeholder {
+  color: #888;
+}
+</style>
+  <script>
+    const validCities = [
+  "Bangalore", "Delhi", "Mumbai", "Jaipur", "Kolkata", "Hyderabad",
+  "Chennai", "Pune", "Ahmedabad", "Lucknow", "Chandigarh", "Indore",
+  "Surat", "Bhopal", "Nagpur", "Visakhapatnam", "Patna", "Vadodara",
+  "Ranchi", "Coimbatore", "Mysore", "Guwahati", "Noida", "Gurgaon",
+  "Thiruvananthapuram", "Amritsar", "Dehradun", "Raipur", "Jodhpur"
+];
+
+    const searchInput = document.getElementById('citySearch');
+    const errorMsg = document.getElementById('errorMsg');
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cityInput = searchInput.value.trim();
+        const match = validCities.find(
+          c => c.toLowerCase() === cityInput.toLowerCase()
+        );
+        if (match) {
+          window.location.href = `weather.html?city=${encodeURIComponent(match)}`;
+        } else {
+          errorMsg.textContent = `Unknown city. Try: ${validCities.join(', ')}`;
+        }
+      }
+    });
+
+    // 3D tilt effect
+    const card = document.getElementById('searchCard');
+    document.addEventListener('mousemove', e => {
+      const x = (window.innerWidth / 2 - e.pageX) / 40;
+      const y = (window.innerHeight / 2 - e.pageY) / 40;
+      card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+    document.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  </script>
+</body>
+</html>

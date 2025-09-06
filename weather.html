@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Info</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" id="tiltCard">
+    <h1>🌦️ City Weather</h1>
+    <div id="weatherDetails" class="weather-box"></div>
+    <a href="index.html" class="back-link">🔙 Back to Search</a>
+  </div>
+
+  <script>
+    const fakeWeatherData = {
+      Bangalore: { temp: 28, condition: "Partly Cloudy" },
+      Delhi:    { temp: 35, condition: "Hot and Sunny" },
+      Mumbai:   { temp: 32, condition: "Humid" },
+      Jaipur:   { temp: 30, condition: "Warm" },
+      Kolkata:  { temp: 33, condition: "Rainy" },
+      Hyderabad:{ temp: 29, condition: "Clear Skies" }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const city = params.get('city');
+    const box = document.getElementById('weatherDetails');
+
+    if (!city || !fakeWeatherData[city]) {
+      box.textContent = "❌ City not supported.";
+    } else {
+      const { temp, condition } = fakeWeatherData[city];
+      box.innerHTML = `
+        <h2>${city}</h2>
+        <p><strong>Temperature:</strong> ${temp}°C</p>
+        <p><strong>Condition:</strong> ${condition}</p>
+      `;
+    }
+
+    // 3D tilt effect
+    const card = document.getElementById('tiltCard');
+    document.addEventListener('mousemove', e => {
+      const x = (window.innerWidth / 2 - e.pageX) / 40;
+      const y = (window.innerHeight / 2 - e.pageY) / 40;
+      card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+    document.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  </script>
+</body>
+</html>
